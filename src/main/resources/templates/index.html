@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html  lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>SimpleChat</title>
+</head>
+<body>
+    <header>
+		<h1>Welcome to SimpleChat!</h1>
+	</header>
+
+    <div id="options">
+        <form id="login" method="get" action="/login">
+            <button type="submit">Log in</button>
+        </form>
+    
+        <form id="signup" method="get" action="/signup">
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+</body>
+</html>
