@@ -22,6 +22,10 @@ public class UsersService implements IUsersService {
     }
 
     @Override
+    public List<UsersRecord> searchByPeers(int myId){
+        return usersDao.searchByPeers(myId);
+    }
+    @Override
     public int insert(UsersRecord data){
         return usersDao.insert(data);
     }

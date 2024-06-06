@@ -33,6 +33,7 @@ function sendMessage() {
 		// ajaxミスったらアラート。
 	});
 
+	$("#message-area").val("");
 }
 
 function generateMessageClassTag(innerElement) {

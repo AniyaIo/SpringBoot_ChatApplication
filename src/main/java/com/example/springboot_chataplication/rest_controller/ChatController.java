@@ -26,7 +26,6 @@ public class ChatController {
     private ResponseEntity<List<MessagesRecord>> sendReceiveData (
             @RequestBody ReceiveData receiveData,
             Model model){
-        System.out.println("Get JSData:"+receiveData.getLastMessageDateTime());
 
         List<MessagesRecord> messageList=new ArrayList<>();
         if(receiveData.getLastMessageDateTime()!=null) {

@@ -7,6 +7,7 @@ import java.util.List;
 public interface IUsersService {
     List<UsersRecord> findAll();
     UsersRecord findById(int searchId);
+    List<UsersRecord> searchByPeers(int myId);
     int insert(UsersRecord data);
     int update(UsersRecord data);
     int delete(int id);

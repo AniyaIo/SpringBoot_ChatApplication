@@ -8,6 +8,7 @@ public interface IUsersDao {
     List<UsersRecord> findAll();
     UsersRecord findById(int searchId);
     int findByAccount(String loginId,String password);
+    List<UsersRecord> searchByPeers(int myId);
     int insert(UsersRecord data);
     int update(UsersRecord data);
     int delete(int id);

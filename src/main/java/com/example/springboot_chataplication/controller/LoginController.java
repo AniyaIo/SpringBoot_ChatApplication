@@ -1,6 +1,8 @@
 package com.example.springboot_chataplication.controller;
 
 import com.example.springboot_chataplication.form.LoginForm;
+import com.example.springboot_chataplication.record.PeerRecord;
+import com.example.springboot_chataplication.record.UsersRecord;
 import com.example.springboot_chataplication.service.IMessagesService;
 import com.example.springboot_chataplication.service.IUsersService;
 import com.example.springboot_chataplication.service.UsersService;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -54,7 +58,7 @@ public class LoginController {
             return "/login";
         }
         session.setAttribute("user", usersService.findById(id));
-        return "redirect:/chat/3";
+        return "redirect:/users";
     }
 
     @GetMapping("/logout")
@@ -62,6 +66,16 @@ public class LoginController {
         session.invalidate();
         return "/logout";
     }
-
+    @GetMapping("/users")
+    public String menu(Model model){
+        var userData=(UsersRecord)session.getAttribute("user");
+        var peersData=usersService.searchByPeers(userData.id());
+        List<PeerRecord> peers=new ArrayList<PeerRecord>();
+        for(var peer:peersData){
+            peers.add(new PeerRecord(peer.id(),peer.name()));
+        }
+        model.addAttribute("peers",peers);
+        return "/users";
+    }
 
 }

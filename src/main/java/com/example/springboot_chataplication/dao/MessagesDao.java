@@ -31,15 +31,14 @@ public class MessagesDao implements IMessagesDao {
         param.addValue("me_id", meId);
         param.addValue("peer_id", peerId);
         param.addValue("list_add_at", date);
-        System.out.println("Dao:"+date);
         return jdbcTemplate.query(
                 "SELECT * " +
                     "FROM messages " +
                     "WHERE send_at > :list_add_at " +
                     "AND " +
-                    "sender_id IN(:me_id,:peer_id) " +
-                    "AND " +
-                    "receiver_id IN(:me_id,:peer_id);",
+                    "((sender_id = :me_id AND receiver_id = :peer_id) " +
+                    "OR " +
+                    "(sender_id = :peer_id AND receiver_id = :me_id));",
                 param,
                 new DataClassRowMapper<>(MessagesRecord.class));
     }

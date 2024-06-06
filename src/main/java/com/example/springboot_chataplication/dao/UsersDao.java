@@ -36,8 +36,20 @@ public class UsersDao implements IUsersDao {
         var param = new MapSqlParameterSource();
         param.addValue("loginId", loginId);
         param.addValue("password", password);
-        var list = jdbcTemplate.query("SELECT * FROM users WHERE login_id = :loginId AND password=:password", param, new DataClassRowMapper<>(UsersRecord.class));
+        var list = jdbcTemplate.query("SELECT * FROM users WHERE login_id = :loginId AND password=:password;", param, new DataClassRowMapper<>(UsersRecord.class));
         return list.isEmpty() ? -1 : list.get(0).id();
+    }
+
+    @Override
+    public List<UsersRecord> searchByPeers(int myId){
+        var param = new MapSqlParameterSource();
+        param.addValue("myId", myId);
+        return jdbcTemplate.query(
+                "SELECT * " +
+                    "FROM users " +
+                    "WHERE NOT id = :myId;",
+                param,
+                new DataClassRowMapper<>(UsersRecord.class));
     }
 
     @Override

@@ -13,7 +13,9 @@
             <tr>
                 <td>
                     <label>Login ID</label>
-
+                    <div class="error" th:each="error: ${#fields.errors('loginId')}">
+                        [[ ${error} ]]
+                      </div>
                 </td>
                 <td>
                     <input type="text" required th:field="*{loginId}">
@@ -23,6 +25,9 @@
             <tr>
                 <td>
                     <label>Password</label>
+                    <div class="error" th:each="error: ${#fields.errors('password')}">
+                        [[ ${error} ]]
+                      </div>
                 </td>
                 <td>
                     <input type="password" required th:field="*{password}">
