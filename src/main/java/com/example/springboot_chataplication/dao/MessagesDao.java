@@ -31,12 +31,15 @@ public class MessagesDao implements IMessagesDao {
         param.addValue("me_id", meId);
         param.addValue("peer_id", peerId);
         param.addValue("list_add_at", date);
+        System.out.println("Dao:"+date);
         return jdbcTemplate.query(
                 "SELECT * " +
                     "FROM messages " +
                     "WHERE send_at > :list_add_at " +
                     "AND " +
-                    "(sender_id IN(:me_id,:peer_id) OR receiver_id IN(:me_id,:peer_id));",
+                    "sender_id IN(:me_id,:peer_id) " +
+                    "AND " +
+                    "receiver_id IN(:me_id,:peer_id);",
                 param,
                 new DataClassRowMapper<>(MessagesRecord.class));
     }
@@ -47,7 +50,7 @@ public class MessagesDao implements IMessagesDao {
         param.addValue("text", data.text());
         param.addValue("senderId",data.senderId());
         param.addValue("receiverId",data.receiverId());
-        param.addValue("send_at", new Timestamp(System.currentTimeMillis()));
+//        param.addValue("send_at", new Timestamp(System.currentTimeMillis()));
 
         return jdbcTemplate.update(
                 "INSERT " +
@@ -56,7 +59,7 @@ public class MessagesDao implements IMessagesDao {
                     ":text, " +
                     ":senderId, "+
                     ":receiverId, "+
-                    ":send_at);"
+                    "CURRENT_TIMESTAMP);"
                 , param);
     }
 

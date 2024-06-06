@@ -130,6 +130,9 @@ $(function() {
 	myId = $("#my_id").text();
 	peerId = $("#peer_id").text();
 	baseUrl = "http://" + $(location).attr("host");
+	console.log("myId:"+myId);
+	console.log("myId:"+peerId);
+		
 	
 	// formのURLが指定されていない場合に自身のURLへ再度アクセスしないようにする
 	$("form").on("submit", function(e){

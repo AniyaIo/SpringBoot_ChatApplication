@@ -16,9 +16,8 @@ public class Controller {
     @GetMapping("/chat/{peerId}")
     private String chatIndex(@PathVariable("peerId") int peerId,
                              Model model){
-        //自分と相手の情報をsessionとDBから引っ張ってくる
         var peerData = usersService.findById(peerId);
-        var me=new MeRecord(2); //sessionからID引っ張る
+        var me=new MeRecord(3); //sessionからID引っ張る
         var peer=new PeerRecord(peerData.id(), peerData.name());
 
         model.addAttribute("me",me);

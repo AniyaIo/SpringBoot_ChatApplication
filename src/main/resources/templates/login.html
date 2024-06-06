@@ -12,10 +12,11 @@
         <table>
             <tr>
                 <td>
-                    <label>Email Address</label>
+                    <label>Login ID</label>
+
                 </td>
                 <td>
-                    <input type="email" required th:field="*{mailAddress}">
+                    <input type="text" required th:field="*{loginId}">
                 </td>
             </tr>
 
@@ -31,6 +32,7 @@
             <tr>
                 <td></td>
                 <td>
+                    <p class="error">[[${loginFailedMessage}]]</p>
                     <button type="submit">Log in</button>
                 </td>
             </tr>
