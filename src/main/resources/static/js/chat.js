@@ -16,17 +16,23 @@ function sendMessage() {
 		message: $("#message-area").val()
 	});
 	
+	//非同期に送信
 	$.ajax({
 		method: "POST",
 		url: baseUrl + "/send",
 		data: message,
 		contentType: "application/json",
 		dataType: "json" // TODO: write success case and error case
+	})
+	.done(function(data){
+		//成功時の処理
+		console.log("send: " + message);
+	})
+	.fail(function(data) {
+		alert('error');
+		// ajaxミスったらアラート。
 	});
-	
-	console.log("send: " + message);
-	
-	$("#message-area").val("");
+
 }
 
 function generateMessageClassTag(innerElement) {
@@ -35,11 +41,11 @@ function generateMessageClassTag(innerElement) {
 	return openingTag + innerElement + closingTag;
 }
 
-function generatePeerIconClassTag(id) {
-	const openingTag = `<img class="peer_icon" src="/image/`;
-	const closingTag = `" width="45" height="45" loading="lazy" decoding="async"/>`;
-	return openingTag + id + closingTag;
-}
+// function generatePeerIconClassTag(id) {
+// 	const openingTag = `<img class="peer_icon" src="/image/`;
+// 	const closingTag = `" width="45" height="45" loading="lazy" decoding="async"/>`;
+// 	return openingTag + id + closingTag;
+// }
 
 function generateMessageContentClassTag(sideName, content) {
 	const openingTag = `<p class="content ` + sideName + `">`;
@@ -56,16 +62,18 @@ function generateSentDateTimeTag(sentDateTime) {
 function showMessages(messages) {
 	for (let i = 0; i < messages.length; i++) {
 		const m = messages[i];
-		const sentDateTimeTag = generateSentDateTimeTag(m.sentDateTime);
+		const sentDateTimeTag = generateSentDateTimeTag(m.sendAt);
 		let appendingElement;
 		
 		if (m.senderId == myId) {
-			const messageContentClassTag = generateMessageContentClassTag("my_side", m.message);
+			const messageContentClassTag = generateMessageContentClassTag("my_side", m.text);
 			appendingElement = generateMessageClassTag(messageContentClassTag + sentDateTimeTag);	
 		} else {
-			const peerIconClassTag = generatePeerIconClassTag(peerId);
-			const messageContentTag = generateMessageContentClassTag("peer_side", m.message);
-			appendingElement = generateMessageClassTag(peerIconClassTag + messageContentTag + sentDateTimeTag);	
+			//画像アイコン取得
+			// const peerIconClassTag = generatePeerIconClassTag(peerId);
+			const messageContentTag = generateMessageContentClassTag("peer_side", m.text);
+			// appendingElement = generateMessageClassTag(peerIconClassTag + messageContentTag + sentDateTimeTag);
+			appendingElement = generateMessageClassTag(messageContentTag + sentDateTimeTag);	
 		}
 		$("#message-list").append(appendingElement);
 	}
@@ -88,6 +96,7 @@ function receiveMessage() {
 			lastMessageDateTime: lastMessageDataTime
 		});
 		
+		//非同期に受信
 		$.ajax({
 			method: "POST",
 			url: baseUrl + "/receive",
@@ -116,11 +125,13 @@ function receiveMessage() {
 	});
 }
 
+//各種関数の実行
 $(function() {
 	myId = $("#my_id").text();
 	peerId = $("#peer_id").text();
 	baseUrl = "http://" + $(location).attr("host");
 	
+	// formのURLが指定されていない場合に自身のURLへ再度アクセスしないようにする
 	$("form").on("submit", function(e){
 		e.preventDefault();
 	});
@@ -129,7 +140,9 @@ $(function() {
 		sendMessage();
 	});
 	
+	//1秒ごとに受信処理を実行
 	setInterval(receiveMessage, 1000);
-	
+	//receiveMessage();
+
 	moveToBottom();
 });

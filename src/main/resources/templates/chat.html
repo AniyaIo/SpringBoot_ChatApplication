@@ -17,20 +17,19 @@
 
     <div id="message-list">
 		<div class="message" th:each="message: ${messages}">
-			<th:block th:if="${message.sender.id == me.id}">
-				<p class="content my_side" th:text="${message.message}"></p>
+			<th:block th:if="${message.senderId == me.id}">
+				<p class="content my_side" th:text="${message.text}"></p>
 			</th:block>
 			
-			<th:block th:if="${message.sender.id == peer.id}">
+			<th:block th:if="${message.senderId == peer.id}">
 				<img class="peer_icon" th:src="@{/image/{id}(id=${peer.id})}" width="45" height="45" loading="lazy" decoding="async"/>
-            	<p class="content peer_side" th:text="${message.message}"></p>
+            	<p class="content peer_side" th:text="${message.text}"></p>
 			</th:block>
-			<span class="sent_datetime" hidden th:text="${message.sentDateTime}"></span>
+			<span class="sent_datetime" hidden th:text="${message.sendAt}"></span>
 		</div>
     </div>
 
     <div id="bottom-space"></div>
-
     <form id="message-form">
         <textarea id="message-area"></textarea>
         <button type="submit" id="submit-button">Send</button>
